@@ -1,0 +1,82 @@
+1. Entenda o "Esqueleto" do seu Projeto
+Se o professor mudar uma linha de lugar ou apagar algo, você precisa saber em qual fase do projeto vocês estão. O Aprendizado de Máquina sempre segue esta linha de produção:
+
+Carga: pd.read_csv (Traz os dados para o Python).
+
+Análise (EDA): Os gráficos que fizemos (Gráfico de barras, Densidade do tempo, Boxplot dos valores).
+
+Preparação: train_test_split (Divide em 80% treino e 20% teste).
+
+Treino: modelo_ia.fit (O robô estuda os dados de treino).
+
+Avaliação: confusion_matrix (A prova final da IA).
+
+Se o código der erro, a primeira coisa que você vai olhar é: Em qual desses passos o professor mexeu?
+
+
+
+2. As 3 "Pegadinhas" mais comuns que os professores fazem:
+Se ele disser: "Vou mudar uma coisa aqui para ver o que acontece", ele provavelmente vai mexer em um destes três pontos:
+
+Pegadinha A: Ele apaga ou muda o stratify=y
+O que ele fez: No Passo 4, ele pode tirar o stratify=y ou mudar para outra coisa.
+
+O que vai acontecer: O modelo pode perder muita qualidade ou dar erro, porque as fraudes (que são pouquíssimas) vão ficar todas concentradas no treino ou todas no teste.
+
+Como você corrige/explica: "Professor, o senhor tirou o estrato. Como a base é muito desbalanceada, precisamos do stratify=y para garantir que o grupo de treino e o de teste tenham a mesma proporção de fraudes. Sem isso, a IA não aprende direito." (E aí você digita stratify=y de volta dentro do parêntese).
+
+
+Pegadinha B: Ele muda o test_size=0.20 para algo absurdo (ex: 0.99 ou 0.001)
+O que ele fez: Ele alterou a proporção de 20% de teste.
+
+O que vai acontecer: Se ele colocar 0.99, o código vai dar erro ou a IA vai tirar nota zero (porque ela só vai ter 1% de dados para treinar). Se ele colocar 0.001, o teste vai ser pequeno demais para avaliar.
+
+Como você corrige/explica: "O senhor mudou a proporção de teste. O padrão de mercado é deixar entre 20% (0.20) e 30% (0.30) para teste, garantindo dados suficientes tanto para a IA aprender quanto para ser testada de forma justa." (Corrija voltando para 0.20).
+
+
+Pegadinha C: Ele troca o nome de uma variável
+
+O que ele fez: Ele pode mudar o nome de X_train para x_treino em uma linha e esquecer de mudar na outra.
+
+O que vai acontecer: O Python vai dar um erro chamado NameError: name '...' is not defined.
+
+Como você corrige/explica: Olhe a última linha do erro vermelho. Se tiver escrito NameError, significa que o Python não conhece aquela palavra. Olhe a linha de cima e veja se as variáveis estão com o mesmo nome exato (lembrando que maiúsculo e minúsculo faz diferença no Python).
+
+
+
+3. Como ler o Erro na frente do professor (Sem entrar em pânico)
+Quando o professor mexer e o código quebrar, vai aparecer aquela tela vermelha gigante cheia de códigos. Não olhe para o topo do erro, vá direto para a ÚLTIMA LINHA.
+
+A última linha é onde o Python te diz o que aconteceu em linguagem quase humana:
+
+FileNotFoundError: Ele mudou o caminho ou o nome do arquivo .csv. (Corrija checando o nome do arquivo).
+
+KeyError: Ele tentou buscar uma coluna que não existe (ex: digitou df['Classe'] em vez de df['Class']).
+
+SyntaxError: Ele esqueceu de fechar um parêntese ) ou uma vírgula ,.
+
+Se você ler a última linha em voz alta, o professor vai ver que você sabe debugar (procurar erros). Exemplo: "Ah, deu um KeyError aqui, deixa eu ver... Ah, o senhor mudou o nome da coluna 'Class' para 'Classe', por isso a biblioteca não encontrou."
+
+
+
+4. A Postura Defensiva Perfeita (Sua melhor arma)
+Se ele te perguntar sobre um comando de gráfico ou de matriz que você não sabe o que significa cada palavra, use a Postura Conceitual:
+
+"Professor, eu confesso que não decorei a sintaxe exata de todos os parâmetros dessa biblioteca, porque ela é muito extensa e nós consultamos a documentação no dia a dia. Mas eu sei exatamente o objetivo dessa linha: ela serve para [explique o conceito, ex: plotar a matriz de confusão e nos mostrar os acertos e erros do modelo]."
+
+Nenhum professor sério vai te reprovar por isso. Pelo contrário, demonstrar que você entende o conceito do negócio e da estatística vale muito mais do que ter decorado se o comando usa cmap='Blues' ou cmap='Oranges'.
+
+
+
+5. Resumo para você levar na mente:
+df: É a sua tabela cheia de dados.
+
+X: São as pistas (Tempo, Valor, V1... V28).
+
+y: É o crime / a resposta (0 para normal, 1 para fraude).
+
+.fit(): É o comando que faz a IA estudar.
+
+.predict(): É o comando que faz a IA adivinhar o teste.
+
+Se você fixar esses 5 pontos na cabeça, pode deixar ele mexer no código à vontade. Você vai se sair muito bem!
